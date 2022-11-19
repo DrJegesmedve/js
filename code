@@ -1,0 +1,184 @@
+const express = require('express');
+const app = express();
+
+const prefix = "g!"
+
+const footer = "Creator: Dr. Jegesmedve\nv2.0.0"
+
+const fejlesztes = "Figyelem! Ez a funkció jelenleg fejlesztés alatt áll!"
+
+app.get('/', (req, res) => {
+	res.send(
+		"A VálaszBot működik!"
+	);
+});
+
+app.listen(3000, () => {
+	console.log(
+		"A BOT kiválóan működik! De azért ne felejtsd el megnézni az Uptime Robotot sem! Plusz teszteld a szerveren!"
+	);
+});
+
+const Discord = require("discord.js");
+const client = new Discord.Client({intents: ["GUILDS", "GUILD_MESSAGES"]});
+
+client.on("ready", () => {
+	client.user.setActivity("Szerver", { type: "WATCHING" });
+});
+
+client.on("message", message => {
+  if (message.content === prefix + "help") {
+    let embed = new Discord.MessageEmbed()
+       .setTitle("GamEngine HELP")
+       .setDescription("Ez a GamEngine Discord szerver BOT-jának a HELP menüje.\nItt található a szerveren elérhető BOT-ok útmutatója.\n\n**Prefix:**`g!`\n\n**Útmutatók**\n - `help botmodi` Botmodi útmutatók.\n - `help serverradio` Szerverrádió útmutató.\n - `help covid` Dr. Korona útmutató.\n - `help math` Dr. Matek útmutató.\n - `help freegames` Ingyenes Videójátékok útmutató.\n - `help reactionroles` Reakció-rangok útmutató.\n - `help welcome` Üdvözlő útmutató.\n\n**Egyéb parancsok**\n - `info` Ha valami nem működne...")
+        .setColor("GREY")
+        .setFooter(footer);
+    message.channel.send( {embeds : [ embed ] } );
+  }
+
+  if (message.content === prefix + "help botmodi") {
+		let embed = new Discord.MessageEmbed()
+			.setTitle("Botmodi útmutató")
+			.setDescription("A szerver elsőszámú BOT-ja.\n Mivel a működése viszonylag komlex,\nezért három részre bontottuk.\n\n - `help general` Általános parancsok.\n - `help points` Pontozás, pontrendszer működése.\n - `help moderation` Moderációs parancsok.")
+			.setColor("PURPLE")
+			.setFooter(footer);
+		message.channel.send( {embeds : [ embed ] } );
+	}
+
+	if (message.content === prefix + "help general") {
+		let embed = new Discord.MessageEmbed()
+			.setTitle("Általános parancsok")
+			.setDescription("**Általános parancsok**\nFontos, hogy a `<>` kötelező, a `[]` viszont nem.\n\n**Prefix:** `bm!`\n\n - `profile [@Tag]` Megmutatja egy tag profilkártyáját.\n - `user [@Tag]` Megmutatja egy tag adatait.\n - `avatar [@Tag]` Megmutatja egy tag profilképét.\n - `server` Adatokat mutat meg a szerverről.\n - `roles` Listázza a szerver rangjait.\n - `short <URL>` Rövidít egy URL-t.\n - `ping` Teszteli BOT visszajelzési idejét.")
+			.setColor("PURPLE")
+			.setFooter(footer);
+		message.channel.send( {embeds : [ embed ] } );
+	}
+
+  if (message.content === prefix + "help points") {
+		let embed = new Discord.MessageEmbed()
+			.setTitle("Pontozás, pontrendszer működése")
+			.setDescription("**Pontozás, pontrendszer működése**\nA szerveren a moderátorok és az adminok pontokkal jutalmazhatják a tagokat.\nSzükség esetén a pontokból le is lehet vonni!\n\n**Mire lehet pontot adni?**\n**Pozitív pontok:**\n - Ha egy tag illedelmesen viselkedik társaival hosszútávon. (*1 Pont*)\n - Ha egy tag segít egy másik tagot. (*3 Pont*)\n - Ha egy tag segíti a moderátorok/adminok munkáját. (*Nagyságtól függően 5-10 Pont.*)\n\n**Negatív pontok:**\n - Ha egy tag megszegi a szabályzat bármely pontját. (*Nagyságtól függően 1-25 Pont vonható le.*)\n\n\n**A pontozás parancsai:**\n - `help pointscomms` Pontozás parancsai.")
+			.setColor("PURPLE")
+			.setFooter(footer);
+		message.channel.send( {embeds : [ embed ] } );
+	}
+
+  if (message.content === prefix + "help pointscomms") {
+		let embed = new Discord.MessageEmbed()
+			.setTitle("Pontozás parancsai")
+			.setDescription("**Pontozás parancsai**\nFontos, hogy a `<>` kötelező, a `[]` viszont nem.\n\n**Prefix:** `bm!`\n\n - `top` megmutatja a legtöbb ponttal rendelkező tagokat.\n - `points <@Tag>` megmutatja egy tag pointjait.\n - `points <@Tag> +/- <szám>` Ad/elvesz egy adott mennyiségű pontot egy tagtól.\n - `points <@Tag> 0` Visszaállítja, reseteli egy tag pontjait.\n - `points reset` Visszaállítja, reseteli az összes tag pontjait. **Csak a tulajdonos használhatja!**")
+			.setColor("PURPLE")
+			.setFooter(footer);
+		message.channel.send( {embeds : [ embed ] } );
+	}
+
+  if (message.content === prefix + "help moderation") {
+		let embed = new Discord.MessageEmbed()
+			.setTitle("Moderáció")
+			.setDescription("**Moderáció**\nA moderációs parancsok közé tartoznak az általános moderációs parancsok,\nmint például a mute, stb. és a figyelmeztetés parancsok, ami a pontok szinte ellentéte.\nFontos, hogy a `<>` kötelező, a `[]` viszont nem.\n\n**Prefix:** `bm!`\n\n**Általános moderáció**\n - `mute <@Tag> <Idő>` Némít egy tagod egy adott időre. (10m VAGY 1h)\n - `unmute <@Tag>` Feloldja egy tag némítását.\n\n**Figyelmeztetés parancsok**\n - `warn <@Tag> <Indok>` Figyelmeztet egy tagot. (Szinte bármilyen elfogadható indokot tolerálunk.)\n - `rwarn <@Tag>` Törli egy tag összes figyelmeztetését.\n - `rwarn <ID>` Töröl egy konkrét figyelmeztetés ID alapján.\n - `warnlist` Listázza az összes figyelmeztetést és kiírja a figyelmezteések ID-ját.")
+			.setColor("PURPLE")
+			.setFooter(footer);
+		message.channel.send( {embeds : [ embed ] } );
+	}  //Itt kell még dolgozni!
+
+  if (message.content === prefix + "help serverradio") {
+		let embed = new Discord.MessageEmbed()
+			.setTitle(fejlesztes)
+			.setDescription("")
+			.setColor("DARK_PURPLE")
+			.setFooter(footer);
+		message.channel.send( {embeds : [ embed ] } );
+	}
+
+  if (message.content === prefix + "help covid") {
+		let embed = new Discord.MessageEmbed()
+			.setTitle("Dr. Korona útmutató")
+			.setDescription("A szerveren ez a BOT a COVID-19 okozta pandémia aktuális tájékoztatójaként szolgál.\nFontos, hogy a BOT az angol nyelvet részesíti előnyben.\n\n**Prefix:**`c?`\n\n**Parancsok**\n - `information` Általános információk.\n - `world` Számadatok a világon.\n - `country <ország>` Számadatok egy országban. (Angolul kell beírni az országot!)\n - `prevention` Megelőzés.\n - `symptoms` Tünetek.\n - `donate` Az Egészségügi Világszervezet (**W**orld **H**ealth **O**rganisation) támogatása.")
+			.setColor("RED")
+			.setFooter(footer);
+		message.channel.send( {embeds : [ embed ] } );
+	}
+
+  if (message.content === prefix + "help math") {
+		let embed = new Discord.MessageEmbed()
+			.setTitle("Dr. Matek útmutató")
+			.setDescription("A szerveren ez a BOT okos számológépként funkciónál.\nAz #📏okos-számológép csatornában található hozzá egy átfogó leírás.")
+			.setColor("NAVY")
+			.setFooter(footer);
+		message.channel.send( {embeds : [ embed ] } );
+	}
+
+  if (message.content === prefix + "help freegames") {
+		let embed = new Discord.MessageEmbed()
+			.setTitle("Ingyenes Videójátékok útmutató")
+			.setDescription("A szerveren ez a BOT az ingyenes videójátékokról szóló értesítéseket küldi.\n Jelenleg nem kell vele foglalkozi.")
+			.setColor("GRAY")
+			.setFooter(footer);
+		message.channel.send( {embeds : [ embed ] } );
+	}
+
+  if (message.content === prefix + "help reactionroles") {
+		let embed = new Discord.MessageEmbed()
+			.setTitle("Reakció-rangok útmutató")
+			.setDescription("A szerveren ez a BOT a reakció-rangokat működteti.\n Jelenleg nem kell vele foglalkozi.")
+			.setColor("YELLOW")
+			.setFooter(footer);
+		message.channel.send( {embeds : [ embed ] } );
+	}
+
+  if (message.content === prefix + "help welcome") {
+		let embed = new Discord.MessageEmbed()
+			.setTitle("Üdvözlő útmutató")
+			.setDescription("A szerveren ez a BOT az üdvözlő üzeneteket küldi.\n Jelenleg nem kell vele foglalkozi.")
+			.setColor("PURPLE")
+			.setFooter(footer);
+		message.channel.send( {embeds : [ embed ] } );
+	}
+
+  if (message.content === prefix + "info") {
+		let embed = new Discord.MessageEmbed()
+			.setTitle("Információk & Segítség") //Fejlesztés alatt
+			.setDescription("Ha valamit nem érte él és/vagy valami nem működne,\n akkor")
+      .setColor("BLUE")
+			.setFooter(footer);
+		message.channel.send( {embeds : [ embed ] } );
+	}
+
+	if (message.content === "Ping") {
+		message.channel.send("Pong");
+	}
+
+	if (message.content === "Mikor nyílik meg a szerver?") {
+		message.channel.send("Titok 😉");
+	}
+	
+	if (message.content === prefix + "rules1") {
+	  let embed = new Discord.MessageEmbed()
+	  .setTitle("Szabályzat 1.rész")
+	  .setDescription("**Általános szabályok:**\n\n1.: **Káromkodás, trágár nyelvezet**\n   1.1.: A káromkodást a szerver moderátorai igen szigorúan kezelik. Első három alkalommal figyelmeztetnek, és törlik az üzenetet. Majd, a negyedik alkalommal jelzik ezt egy Adminnak, aki káromkodás indokkal kidobja a szerverről az illetőt.\n   1.2.: Amennyiben elfogadható mértékűnek és odaillőnek ítéli meg egy moderátor rangú, nem jár figyelmeztetés. \n2.: **Politizálás**\n   2.1.: Bármilyen körülmények között fordul elő, bármekkora mértékben, törlésre kerül. Ezután 10 perces némítást és egy Politizálás indokú figyelmeztetést kap a személy. Ha másodjára is előfordul, akkor egy Admin távolítja el az illetőt a szerverről.\n3.: **Diszkrimináció**\n   3.1.: A diszkrimináció összes típusát rendkívüli módon megtoroljuk. Azonnali kidobás, illetve súlyos esetben tiltással is járhat.\n   3.2.: Diszkriminációnak számít, a nemi, faji, származási, vallási és minden egyéb megkülönböztetés.\n4.: **Személyi jogi sértés**\n   4.1.: A szerveren egyik csatornára se küldj olyan képet, videót vagy fájlt, melyről a rajta szereplő ember nem értesült megfelelően és nem egyezett bele! Ha ilyen eset a tudomásunkra jut, akkor a beküldő azonnali tiltására és a fájl törlésére kerül sor.\n   4.2.: Senkiről, még ismeretlenül se küldj olyan képet, videót vagy fájlt, ami a későbbiekben hátrányosan érintheti őt. Még akkor sem, ha a rajta szereplő személy(ek) ebbe beleegyeztek.\n   4.3.: Semmilyen képet ne ments le, ha a 4.1 és/vagy a 4.2 pontban foglaltak gyanúja áll fent!\n   4.4.: A szerver csatornáiról videót készíteni nem tilos. Ha azonban publikálni szeretnéd, akkor erről kérdezd meg a felvételen szereplő személyek véleményét. Amennyiben egyetlen szereplő nem járul csak hozzá ehhez, akkor sem teheted közzé a videót!")
+    .setColor("GOLD")
+    .setFooter(footer);
+  message.channel.send( {embeds : [ embed ] } );
+	}
+
+  if (message.content === prefix + "rules2") {
+		let embed = new Discord.MessageEmbed()
+			.setTitle("Szabályzat 2.rész")
+			.setDescription(".: **Illegális tartalmak, szexualitás és káros szenvedélyek**\n   5.1.: Illegális tartalmak bármely megjelenése a szerveren azonnali tiltással és a tartalom törlésével jár.\n   5.2.: Szexuális tartalom bármely megjelenése a szerveren figyelmeztetéssel és a tartalom törlésével, majd a második alkalommal kidobással jár.\n   5.3.: Azonnali törlésre kerül minden függőséget okozó és vagy káros anyag használatára történő buzdítás. Emellett a tevékenység terjesztője ki lesz tiltva a szerverről.\n   5.4.: Bármely jellegű drog terjesztése szigorúan TILOS! Amennyiben Bárki hasonlóról tudomást szerez, kérjük, a lehető leghamarabb jelezze az Adminoknak!\n6.: **Kereskedelem**\n   6.1.: A kereskedelem különböző formái közül egyetlen sem engedélyezett, figyelmeztetést von maga után.\n   6.2.: Amennyiben mégis sikerül találni valakit, aki nyitott az üzletre, akkor privát üzenetben beszéljétek meg a részleteket!\n7.: **Kártékony fájlok/programok**\n   7.1.: Vírusok, vírus(oka)t és egyéb kártékony fájlok küldése TILOS! Akár végleges kitiltással is járhat!\n   7.2.: Ismerten fertőzött programok ajánlása esetén figyelmeztetünk, majd 2. alkalommal kidobással jár.\n   7.3.: Ha általad fejlesztett programot szeretnél népszerűsíteni, akkor kérjük, hogy egy vezetőségi tagnak (Fő-Admin, Tulaj-helyettes, Tulajdonos) küldd el a program forráskódját! Erre biztonsági okokból van szükség.\n8.: **BOT-ok**\n   8.1.: A BOT-okat extrém terhelésnek kitenni TILOS! Ugyanis nem csak a szervernek, hanem az összes használójának ártasz a világon.")
+			.setColor("GOLD")
+			.setFooter(footer);
+		message.channel.send( {embeds : [ embed ] } );
+	}
+
+  if (message.content === prefix + "rules3") {
+		let embed = new Discord.MessageEmbed()
+			.setTitle("Szabályzat 3.rész")
+			.setDescription( "**Szöveges csatornákra jellemző szabályok:**\n1.: Az összes általános szabály jellemző.\n\n**Hangcsatornákra  jellemző szabályok:**\n1.: Az összes általános szabály jellemző.\n2.: **Egyéb**\n   2.1.: A hangcsatornákban a magasabb rangúak szavába beleszólni TILOS! Figyelmeztetéssel jár.\n   2.2.: Amennyiben lehetséges próbáld a\nlehető legkisebbre csökkenteni a zajokat.\n   2.3.: Tartsd tiszteletben a többieket!\n\n**Rang szabályok:**\n1.: **Visszaélés**\n   1.1.: A különböző rangoknál különböző módokon lehet visszaélni. Ha bárki ezt kihasználja, a rang elvételével jár! Szélsőséges esetben az illető kidobásra kerül.\n\n**Egyéb szabályok:**\n1.: **Spam**\n   1.1.: A spam kerülendő, ugyanis figyelmeztetéseket lehet érte kapni.\n2.: **Hírdetés/promóció**\n   2.1.: YouTube vagy más csatorna hírdetése engedélyhez kötött. Engedélyt a kérdések csatornában lehet igényelni.\n3.: **Betarás és végrehajtás**\n   3.1.: A szabályokat kötelező betartani, csupán néhány, különleges esemény miatt tekintetünk el tőlük.\n   3.2.: Ha bárki észleli, hogy valaki a szabályzat egy súlyos pontját szegi meg, akkor azonnal jelentenie kell a vezetőségnek! Ha viszont egy kisebb szabályszegés történik, akkor a moderátornak kell jelezni.\n   3.3.: A szabályok nem ismerete nem mentesít a következmények alól szabálysértéskor.")
+			.setColor("GOLD")
+			.setFooter(footer);
+		message.channel.send( {embeds : [ embed ] } );
+	}
+
+});
+
+client.login(process.env.token);
